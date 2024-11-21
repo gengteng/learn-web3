@@ -84,6 +84,12 @@ $ cargo add rand
 rand = "0.8.4"
 ```
 
+更新依赖可以使用 cargo update 命令，例如：
+
+```bash
+$ cargo update
+```
+
 ### 国内镜像配置
 
 ```toml

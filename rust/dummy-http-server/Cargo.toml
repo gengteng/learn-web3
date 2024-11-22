@@ -1,0 +1,17 @@
+[package]
+name = "dummy-http-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.93"
+async-trait = "0.1.83"
+bytes = "1.8.0"
+futures = "0.3.31"
+http = "1.1.0"
+httparse = "1.9.5"
+mime_guess = "2.0.5"
+tokio = { version = "1.41.1", features = ["full"] }
+tokio-util = { version = "0.7.12", features = ["codec"] }
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"

@@ -2,10 +2,12 @@
 
 ## 实现的功能
 
-1. GET / POST 请求
-2. 一级目录静态文件访问
+1. 简单的 http 请求解析和响应
+2. GET / POST 两种方法
 3. 基本的优雅关闭
 4. 支持 Router
+5. 使用 tokio 支持高并发
+6. 一级目录静态文件访问
 
 ## 使用的 crate
 
@@ -43,7 +45,7 @@ Hello, World! (using POST method), body=fdsafsdafs
 
 3. 静态文件访问
 
-直接使用浏览器打开 `http://localhost:8080/`，会显示 `index.html` 的内容。
+直接使用浏览器打开 `http://localhost:8080/`, 会显示 `index.html` 的内容。
 index.html 引用了 a.css，所以页面上的 `Hello, World!` 会变成红色。
 
 4. 优雅关闭

@@ -52,11 +52,13 @@ impl HttpServer {
         }
 
         self.closers.clear();
+        tracing::info!("Shutting down server...");
         let _ = timeout(
             Duration::from_secs(10),
             futures::future::join_all(self.handles),
         )
         .await?;
+        tracing::info!("All connections closed, server shut down, bye!");
         Ok(())
     }
 }

@@ -32,11 +32,7 @@ async fn start() -> anyhow::Result<()> {
     tracing::info!(?router, "Router");
     tracing::info!("Http server listening on {}", addr);
     HttpServer::default()
-        .serve(
-            addr,
-            router,
-            tokio::signal::ctrl_c().map(|_| tracing::info!("Shutting down...")),
-        )
+        .serve(addr, router, tokio::signal::ctrl_c().map(|_| ()))
         .await?;
     Ok(())
 }

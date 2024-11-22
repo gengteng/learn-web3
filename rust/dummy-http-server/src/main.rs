@@ -22,11 +22,11 @@ async fn start() -> anyhow::Result<()> {
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
 
-    let directory = Directory::new("/file", ".").await?;
+    let directory = Directory::new("/", "fixtures").await?;
 
     let router = Router::builder()
-        .get("/", hello_world)
-        .post("/", hello_world)
+        .get("/hello", hello_world)
+        .post("/hello", hello_world)
         .merge(directory);
 
     tracing::info!(?router, "Router");

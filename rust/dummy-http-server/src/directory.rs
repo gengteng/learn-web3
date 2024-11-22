@@ -16,16 +16,20 @@ impl Directory {
 
         let mut read_dir = tokio::fs::read_dir(&dir).await?;
         while let Some(entry) = read_dir.next_entry().await? {
-            let path = entry.path();
-            let path = path.strip_prefix(&dir)?;
+            let file_path = entry.path();
+            let path = file_path.strip_prefix(&dir)?;
             let method = Method::GET;
-            let route = format!("{}/{}", base_route, path.to_string_lossy().to_string());
-            handlers.insert((method, route), Box::new(File(path.to_path_buf())));
+            let route = format!(
+                "{}/{}",
+                if base_route == "/" { "" } else { base_route },
+                path.to_string_lossy().to_string()
+            );
+            handlers.insert((method, route), Box::new(File(file_path.to_path_buf())));
 
             if path == PathBuf::from("index.html") {
                 handlers.insert(
                     (Method::GET, base_route.to_string()),
-                    Box::new(File(path.to_path_buf())),
+                    Box::new(File(file_path.to_path_buf())),
                 );
             }
         }
@@ -46,7 +50,8 @@ pub struct File(PathBuf);
 
 #[async_trait::async_trait]
 impl Handler for File {
-    async fn handle(&self, _req: Request<Bytes>) -> Response<Bytes> {
+    async fn handle(&self, req: Request<Bytes>) -> Response<Bytes> {
+        tracing::info!(?req, "Handling file: {:?}", self.0);
         let body = tokio::fs::read(&self.0).await.unwrap_or_default();
         // check the file extension and set the content type
         let content_type = mime_guess::from_path(&self.0)

@@ -1,0 +1,4 @@
+# use local target directory
+
+[build]
+target-dir = "target"

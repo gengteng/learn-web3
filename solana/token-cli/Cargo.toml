@@ -1,0 +1,12 @@
+[package]
+name = "token-cli"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.93"
+borsh = "1.5.3"
+token = { path = "../token", features = ["no-entrypoint"] }
+spl-token = { version = "7.0.0", features = ["no-entrypoint"] }
+solana-client = "2.1.2"
+solana-sdk = "2.1.2"

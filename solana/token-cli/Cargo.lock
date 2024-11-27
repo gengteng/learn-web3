@@ -5089,6 +5089,8 @@ dependencies = [
  "borsh 1.5.3",
  "solana-client",
  "solana-sdk",
+ "spl-associated-token-account",
+ "spl-associated-token-account-client",
  "spl-token 7.0.0",
  "token",
 ]

@@ -3,8 +3,11 @@ pub mod user {
     use borsh::{BorshDeserialize, BorshSerialize};
     use solana_program::program_error::ProgramError;
     use solana_program::pubkey::Pubkey;
+    use std::mem::size_of;
 
     pub const MAX_FOLLOWERS: usize = 200;
+
+    pub const VEC_LENGTH_LEN: usize = 4;
 
     pub trait Space {
         fn space() -> usize;
@@ -12,7 +15,6 @@ pub mod user {
 
     #[derive(Debug, Default, BorshDeserialize, BorshSerialize)]
     pub struct Profile {
-        pub data_len: u16,
         pub follows: Vec<Pubkey>,
     }
 
@@ -24,12 +26,11 @@ pub mod user {
 
     impl Profile {
         pub fn calculate_space(count: usize) -> usize {
-            6 + count * size_of::<Pubkey>()
+            VEC_LENGTH_LEN + count * size_of::<Pubkey>()
         }
 
         pub fn follow(&mut self, user: Pubkey) {
             self.follows.push(user);
-            self.data_len += 1;
         }
     }
 
@@ -63,5 +64,21 @@ pub mod user {
         fn space() -> usize {
             8 + 8 + 256
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::state::user::Profile;
+    use solana_program::pubkey::Pubkey;
+
+    #[test]
+    fn test_profile_space() {
+        let mut profile = Profile::default();
+        println!("{}", borsh::to_vec(&profile).unwrap().len());
+        profile.follow(Pubkey::new_unique());
+        println!("{}", borsh::to_vec(&profile).unwrap().len());
+        profile.follow(Pubkey::new_unique());
+        println!("{}", borsh::to_vec(&profile).unwrap().len());
     }
 }

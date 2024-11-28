@@ -100,8 +100,8 @@ fn process_follow_user(user: &Pubkey, accounts: &[AccountInfo]) -> ProgramResult
     {
         let data = pda_account.data.borrow();
         match data.iter().as_slice() {
-            [l0, l1, data @ ..] => {
-                let count = u16::from_le_bytes([*l0, *l1]);
+            [l0, l1, l2, l3, data @ ..] => {
+                let count = u32::from_le_bytes([*l0, *l1, *l2, *l3]);
                 size = Profile::calculate_space(count as usize);
                 msg!("Profile size: {}", size);
             }
